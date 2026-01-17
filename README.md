@@ -1,183 +1,183 @@
-# TR-808 Step Sequencer
+# TR-808 ステップシーケンサー
 
-A browser-based TR-808 style step sequencer built with vanilla JavaScript and Web Audio API. No external libraries required.
+Web Audio APIを使用したブラウザベースのTR-808風ステップシーケンサーです。外部ライブラリは一切使用していません。
 
-## ✨ Features
+## ✨ 機能
 
-### Core Functionality
-- **16-step sequencer** with 3 classic drum tracks
-- **Kick, Snare, Hi-Hat** synthesized with Web Audio API
-- **Precise timing** using AudioContext scheduler (not setInterval)
-- **BPM control** (60-200 BPM, default: 120)
-- **Visual step highlighting** during playback
+### コア機能
+- **16ステップシーケンサー** - 3つのクラシックドラムトラック
+- **Kick、Snare、Hi-Hat** - Web Audio APIで完全合成
+- **正確なタイミング制御** - AudioContextスケジューラーを使用（setIntervalではない）
+- **BPMコントロール** - 60〜200 BPM（デフォルト: 120）
+- **ビジュアルハイライト** - 再生中のステップを視覚的に表示
 
-### Effects System
-- **Reverb** - Convolver-based spatial effect with 2s decay
-- **Delay** - Feedback delay synchronized to tempo (dotted 8th note)
-- **Distortion** - WaveShaper with dynamic curve generation
-- **Real-time control** - Adjust effects during playback
+### エフェクトシステム
+- **Reverb（リバーブ）** - Convolverベースの空間エフェクト（2秒のディケイ）
+- **Delay（ディレイ）** - テンポ同期フィードバックディレイ（付点8分音符）
+- **Distortion（ディストーション）** - WaveShaperによる動的な歪み
+- **リアルタイム制御** - 再生中にエフェクトを調整可能
 
-### User Experience
-- **TR-808 inspired UI** - Gray base with orange accents
-- **Responsive design** - Works on desktop and mobile
-- **No installation** - Runs directly in the browser
-- **Default pattern** - Demo pattern loaded on startup
+### ユーザー体験
+- **TR-808風UI** - グレーベースにオレンジのアクセント
+- **レスポンシブデザイン** - デスクトップ・モバイル対応
+- **インストール不要** - ブラウザで直接実行
+- **デモパターン** - 起動時にサンプルパターンを自動ロード
 
-## 🎮 Demo
+## 🎮 デモ
 
-[Live Demo](https://hfujikawa77.github.io/vc-sequencer/) *(Deploy to GitHub Pages first)*
+[Live Demo](https://hfujikawa77.github.io/vc-sequencer/) *(GitHub Pagesでデプロイ後)*
 
-## 🎵 Sound Design
+## 🎵 サウンドデザイン
 
-All sounds are generated using Web Audio API nodes:
+すべての音源はWeb Audio APIノードで生成しています：
 
-- **Kick**: Sine oscillator with pitch envelope (150Hz → 40Hz)
-- **Snare**: White noise with highpass filter (1kHz) and short decay
-- **Hi-Hat**: High-frequency noise (7kHz+) with very short envelope (50ms)
+- **Kick（キック）**: サイン波オシレーター + ピッチエンベロープ（150Hz → 40Hz）
+- **Snare（スネア）**: ホワイトノイズ + ハイパスフィルター（1kHz）+ 短いディケイ
+- **Hi-Hat（ハイハット）**: 高域ノイズ（7kHz以上）+ 超短エンベロープ（50ms）
 
-## 🚀 Quick Start
+## 🚀 クイックスタート
 
-### Option 1: Open Locally
-1. Clone this repository:
+### 方法1: ローカルで開く
+1. リポジトリをクローン:
    ```bash
    git clone https://github.com/hfujikawa77/vc-sequencer.git
    cd vc-sequencer
    ```
 
-2. Open `index.html` in your browser:
+2. ブラウザで`index.html`を開く:
    ```bash
    open index.html
-   # or
+   # または
    python3 -m http.server 8000
    ```
 
-### Option 2: Deploy to GitHub Pages
-1. Go to your repository settings
-2. Navigate to **Settings** → **Pages**
-3. Under **Source**, select:
-   - **Branch**: `claude/tr808-step-sequencer-aoJiC` (or your main branch)
+### 方法2: GitHub Pagesにデプロイ
+1. リポジトリの設定ページに移動
+2. **Settings** → **Pages** を開く
+3. **Source**で以下を選択:
+   - **Branch**: `claude/tr808-step-sequencer-aoJiC`（またはメインブランチ）
    - **Folder**: `/ (root)`
-4. Click **Save**
-5. Access your app at: `https://yourusername.github.io/vc-sequencer/`
+4. **Save**をクリック
+5. 次のURLでアクセス可能に: `https://yourusername.github.io/vc-sequencer/`
 
-## 🎛️ How to Use
+## 🎛️ 使い方
 
-### Basic Controls
-1. **Play/Stop** - Start or stop the sequencer
-2. **BPM** - Adjust tempo (60-200 BPM)
-3. **Step Buttons** - Click to toggle steps ON/OFF
-   - Orange = Active
-   - Green border = Currently playing
+### 基本操作
+1. **Play/Stop** - シーケンサーの再生・停止
+2. **BPM** - テンポ調整（60〜200 BPM）
+3. **ステップボタン** - クリックでON/OFFを切り替え
+   - オレンジ = 有効
+   - 緑の枠 = 再生中
 
-### Effect Controls
-- **Reverb** - Add spatial depth (0-100%)
-- **Delay** - Create rhythmic echoes (0-100%)
-- **Distortion** - Add warmth and punch (0-100%)
+### エフェクトコントロール
+- **Reverb** - 空間的な広がりを追加（0〜100%）
+- **Delay** - リズミカルなエコーを生成（0〜100%）
+- **Distortion** - 温かみとパンチを追加（0〜100%）
 
-### Recommended Settings
+### おすすめ設定
 
-**Trance**
+**トランス風**
 ```
 Reverb: 60%
 Delay: 40%
 Distortion: 20%
 ```
 
-**Lo-Fi**
+**ローファイ風**
 ```
 Reverb: 10%
 Delay: 50%
 Distortion: 30%
 ```
 
-**Clean**
+**クリーン**
 ```
 Reverb: 20%
 Delay: 0%
 Distortion: 0%
 ```
 
-## 🏗️ Technical Architecture
+## 🏗️ 技術アーキテクチャ
 
-### Audio Signal Flow
+### オーディオ信号フロー
 ```
-Sound Generator → [Dry Signal] → Master Gain → Output
-                ↘ [Reverb]     ↗
-                ↘ [Delay]      ↗
-                ↘ [Distortion] ↗
+サウンド生成 → [ドライ信号] → マスターゲイン → 出力
+            ↘ [Reverb]    ↗
+            ↘ [Delay]     ↗
+            ↘ [Distortion]↗
 ```
 
-### Timing System
-- Uses `AudioContext.currentTime` for sample-accurate scheduling
-- Look-ahead scheduler checks every 25ms
-- Schedules notes 100ms in advance
-- No drift or timing issues compared to `setInterval`
+### タイミングシステム
+- `AudioContext.currentTime`でサンプル精度のスケジューリング
+- 先読みスケジューラーが25msごとにチェック
+- 100ms先までノートをスケジュール
+- `setInterval`と比較してドリフトやタイミング問題なし
 
-### Effects Implementation
-- **Reverb**: ConvolverNode with generated impulse response
-- **Delay**: DelayNode with feedback loop (40% feedback)
-- **Distortion**: WaveShaperNode with tanh-based transfer curve
+### エフェクト実装
+- **Reverb**: ConvolverNodeで生成したインパルス応答を使用
+- **Delay**: DelayNodeとフィードバックループ（40%フィードバック）
+- **Distortion**: WaveShaperNodeでtanhベースの伝達曲線を使用
 
-## 📁 Project Structure
+## 📁 プロジェクト構成
 
 ```
 vc-sequencer/
-├── index.html          # Complete single-file app
-└── README.md          # This file
+├── index.html          # 完全な単一ファイルアプリ
+└── README.md          # このファイル
 ```
 
-## 🛠️ Technology Stack
+## 🛠️ 技術スタック
 
-- **HTML5** - Structure
-- **CSS3** - Styling with gradients and animations
-- **Vanilla JavaScript** - No frameworks
-- **Web Audio API** - Sound synthesis and effects
-- **AudioContext** - Precise timing control
+- **HTML5** - 構造
+- **CSS3** - グラデーションとアニメーションを含むスタイリング
+- **Vanilla JavaScript** - フレームワーク不使用
+- **Web Audio API** - サウンド合成とエフェクト
+- **AudioContext** - 正確なタイミング制御
 
-## 🎨 UI/UX Design
+## 🎨 UI/UXデザイン
 
-- **Color Scheme**: Dark gray base with orange (#ff6b35) accents
-- **Typography**: Arial monospace for retro feel
-- **Visual Feedback**:
-  - Pulse animation on active steps
-  - Glow effects on buttons and sliders
-  - Color-coded track borders
+- **カラースキーム**: ダークグレーベース + オレンジ（#ff6b35）のアクセント
+- **タイポグラフィ**: レトロ感のためArialモノスペース
+- **ビジュアルフィードバック**:
+  - アクティブステップのパルスアニメーション
+  - ボタンとスライダーの発光エフェクト
+  - トラックごとの色分けされたボーダー
 
-## 🔧 Browser Compatibility
+## 🔧 ブラウザ互換性
 
 - ✅ Chrome 89+
 - ✅ Firefox 88+
 - ✅ Safari 14+
 - ✅ Edge 89+
 
-*Requires Web Audio API support*
+*Web Audio APIのサポートが必要です*
 
-## 📝 Future Enhancements
+## 📝 今後の拡張案
 
-- **Pattern Save/Load** - LocalStorage for multiple patterns
-- **More Tracks** - Add Clap, Tom, Cymbal, etc.
-- **Export Audio** - Record and download WAV files
-- **MIDI Support** - External controller integration
-- **Swing/Shuffle** - Humanize timing
-- **Per-Track Effects** - Individual effect sends
+- **パターン保存/読込** - LocalStorageで複数パターンを管理
+- **トラック追加** - Clap、Tom、Cymbalなどを追加
+- **オーディオエクスポート** - WAVファイルとして録音・ダウンロード
+- **MIDIサポート** - 外部コントローラー連携
+- **スウィング/シャッフル** - タイミングをヒューマナイズ
+- **トラック別エフェクト** - 個別のエフェクトセンド
 
-## 🤝 Contributing
+## 🤝 コントリビューション
 
-Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest features
-- Submit pull requests
+コントリビューションを歓迎します！以下のような形でご協力ください：
+- バグ報告
+- 機能提案
+- プルリクエスト
 
-## 📄 License
+## 📄 ライセンス
 
-MIT License - feel free to use this project for learning or commercial purposes.
+MIT License - 学習用・商用利用ともに自由にご利用ください。
 
-## 🎵 Inspiration
+## 🎵 インスピレーション
 
-Inspired by the legendary Roland TR-808 drum machine, this project demonstrates the power of the Web Audio API for creating musical instruments in the browser.
+伝説的なRoland TR-808ドラムマシンにインスパイアされたこのプロジェクトは、Web Audio APIでブラウザ上に楽器を作る力を示しています。
 
 ---
 
-**Built with ❤️ using Web Audio API**
+**Web Audio APIで構築 ❤️**
 
-*No external libraries • Pure JavaScript • Open Source*
+*外部ライブラリ不使用 • ピュアJavaScript • オープンソース*
