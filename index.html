@@ -270,6 +270,29 @@
             border-left-color: #ff6b6b;
         }
 
+        .effect-control.filter {
+            border-left-color: #a29bfe;
+        }
+
+        .filter-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-param {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-param-label {
+            color: #aaa;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .effect-label {
             color: #fff;
             font-size: 14px;
@@ -397,6 +420,21 @@
                     <input type="range" class="effect-slider" id="distortionSlider" min="0" max="100" value="0">
                     <div class="effect-value" id="distortionValue">0%</div>
                 </div>
+                <div class="effect-control filter">
+                    <label class="effect-label">Filter</label>
+                    <div class="filter-controls">
+                        <div class="filter-param">
+                            <div class="filter-param-label">Cutoff</div>
+                            <input type="range" class="effect-slider" id="filterCutoffSlider" min="0" max="100" value="100">
+                            <div class="effect-value" id="filterCutoffValue">20000 Hz</div>
+                        </div>
+                        <div class="filter-param">
+                            <div class="filter-param-label">Resonance</div>
+                            <input type="range" class="effect-slider" id="filterResonanceSlider" min="0" max="100" value="0">
+                            <div class="effect-value" id="filterResonanceValue">1.0</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -418,6 +456,7 @@
             delayGain: null,
             distortion: null,
             distortionGain: null,
+            filter: null,
             dryGain: null,
             masterGain: null
         };
@@ -426,7 +465,9 @@
         const effectParams = {
             reverb: 0.3,
             delay: 0.0,
-            distortion: 0.0
+            distortion: 0.0,
+            filterCutoff: 20000,
+            filterResonance: 1.0
         };
 
         // シーケンサー状態
@@ -460,6 +501,10 @@
         const delayValue = document.getElementById('delayValue');
         const distortionSlider = document.getElementById('distortionSlider');
         const distortionValue = document.getElementById('distortionValue');
+        const filterCutoffSlider = document.getElementById('filterCutoffSlider');
+        const filterCutoffValue = document.getElementById('filterCutoffValue');
+        const filterResonanceSlider = document.getElementById('filterResonanceSlider');
+        const filterResonanceValue = document.getElementById('filterResonanceValue');
 
         // AudioContextを初期化（最初のユーザーインタラクション時）
         function initAudioContext() {
@@ -519,13 +564,20 @@
             // ディストーションカーブを生成
             updateDistortionCurve(50);
 
+            // フィルター（BiquadFilter）
+            effects.filter = ctx.createBiquadFilter();
+            effects.filter.type = 'lowpass';
+            effects.filter.frequency.value = effectParams.filterCutoff;
+            effects.filter.Q.value = effectParams.filterResonance;
+
             // マスターゲイン
             effects.masterGain = ctx.createGain();
             effects.masterGain.gain.value = 0.8;
 
             // エフェクトチェーンを接続
-            // ドライ → マスター
-            effects.dryGain.connect(effects.masterGain);
+            // ドライ → フィルター → マスター
+            effects.dryGain.connect(effects.filter);
+            effects.filter.connect(effects.masterGain);
 
             // リバーブ → マスター
             effects.reverb.connect(effects.reverbGain);
@@ -802,6 +854,32 @@
             distortionValue.textContent = `${distortionSlider.value}%`;
         }
 
+        function updateFilterCutoff() {
+            const value = parseInt(filterCutoffSlider.value);
+            // 対数スケールで20Hz - 20000Hzにマッピング
+            const minFreq = Math.log(20);
+            const maxFreq = Math.log(20000);
+            const frequency = Math.exp(minFreq + (value / 100) * (maxFreq - minFreq));
+
+            effectParams.filterCutoff = frequency;
+            if (effects.filter) {
+                effects.filter.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            }
+            filterCutoffValue.textContent = `${Math.round(frequency)} Hz`;
+        }
+
+        function updateFilterResonance() {
+            const value = parseInt(filterResonanceSlider.value);
+            // 0.1 - 20のレゾナンス範囲
+            const resonance = 0.1 + (value / 100) * 19.9;
+
+            effectParams.filterResonance = resonance;
+            if (effects.filter) {
+                effects.filter.Q.setValueAtTime(resonance, audioContext.currentTime);
+            }
+            filterResonanceValue.textContent = resonance.toFixed(1);
+        }
+
         // イベントリスナー
         playBtn.addEventListener('click', togglePlay);
         bpmInput.addEventListener('change', updateBPM);
@@ -811,6 +889,8 @@
         reverbSlider.addEventListener('input', updateReverb);
         delaySlider.addEventListener('input', updateDelay);
         distortionSlider.addEventListener('input', updateDistortion);
+        filterCutoffSlider.addEventListener('input', updateFilterCutoff);
+        filterResonanceSlider.addEventListener('input', updateFilterResonance);
 
         // 初期化
         createSteps();
