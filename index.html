@@ -227,6 +227,96 @@
             margin-left: 0;
         }
 
+        .effects-panel {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .effects-title {
+            color: #ff6b35;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .effects-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .effect-control {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid;
+        }
+
+        .effect-control.reverb {
+            border-left-color: #4ecdc4;
+        }
+
+        .effect-control.delay {
+            border-left-color: #95e1d3;
+        }
+
+        .effect-control.distortion {
+            border-left-color: #ff6b6b;
+        }
+
+        .effect-label {
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .effect-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 5px;
+        }
+
+        .effect-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff6b35;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+        }
+
+        .effect-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff6b35;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+        }
+
+        .effect-value {
+            color: #999;
+            font-size: 12px;
+            text-align: right;
+        }
+
         .footer {
             margin-top: 30px;
             text-align: center;
@@ -251,6 +341,10 @@
             .track-name {
                 min-width: 60px;
                 font-size: 12px;
+            }
+
+            .effects-controls {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -285,14 +379,55 @@
             </div>
         </div>
 
+        <div class="effects-panel">
+            <div class="effects-title">Effects</div>
+            <div class="effects-controls">
+                <div class="effect-control reverb">
+                    <label class="effect-label">Reverb</label>
+                    <input type="range" class="effect-slider" id="reverbSlider" min="0" max="100" value="30">
+                    <div class="effect-value" id="reverbValue">30%</div>
+                </div>
+                <div class="effect-control delay">
+                    <label class="effect-label">Delay</label>
+                    <input type="range" class="effect-slider" id="delaySlider" min="0" max="100" value="0">
+                    <div class="effect-value" id="delayValue">0%</div>
+                </div>
+                <div class="effect-control distortion">
+                    <label class="effect-label">Distortion</label>
+                    <input type="range" class="effect-slider" id="distortionSlider" min="0" max="100" value="0">
+                    <div class="effect-value" id="distortionValue">0%</div>
+                </div>
+            </div>
+        </div>
+
         <div class="footer">
-            Web Audio API • No external libraries
+            Web Audio API • No external libraries • With Effects
         </div>
     </div>
 
     <script>
         // AudioContext初期化（ユーザーインタラクション後に有効化される）
         let audioContext = null;
+
+        // エフェクトノード
+        let effects = {
+            reverb: null,
+            reverbGain: null,
+            delay: null,
+            delayFeedback: null,
+            delayGain: null,
+            distortion: null,
+            distortionGain: null,
+            dryGain: null,
+            masterGain: null
+        };
+
+        // エフェクトパラメータ
+        const effectParams = {
+            reverb: 0.3,
+            delay: 0.0,
+            distortion: 0.0
+        };
 
         // シーケンサー状態
         const sequencer = {
@@ -318,12 +453,119 @@
         const snareSteps = document.getElementById('snareSteps');
         const hihatSteps = document.getElementById('hihatSteps');
 
+        // エフェクトコントロール
+        const reverbSlider = document.getElementById('reverbSlider');
+        const reverbValue = document.getElementById('reverbValue');
+        const delaySlider = document.getElementById('delaySlider');
+        const delayValue = document.getElementById('delayValue');
+        const distortionSlider = document.getElementById('distortionSlider');
+        const distortionValue = document.getElementById('distortionValue');
+
         // AudioContextを初期化（最初のユーザーインタラクション時）
         function initAudioContext() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                initEffects();
             }
             return audioContext;
+        }
+
+        // エフェクトチェーンを初期化
+        function initEffects() {
+            const ctx = audioContext;
+
+            // ドライ信号（エフェクトなし）
+            effects.dryGain = ctx.createGain();
+            effects.dryGain.gain.value = 1.0;
+
+            // リバーブ（Convolver）
+            effects.reverb = ctx.createConvolver();
+            effects.reverbGain = ctx.createGain();
+            effects.reverbGain.gain.value = effectParams.reverb;
+
+            // インパルス応答を生成（簡易的なリバーブ）
+            const reverbTime = 2.0; // 2秒のリバーブ
+            const sampleRate = ctx.sampleRate;
+            const length = sampleRate * reverbTime;
+            const impulse = ctx.createBuffer(2, length, sampleRate);
+            const impulseL = impulse.getChannelData(0);
+            const impulseR = impulse.getChannelData(1);
+
+            for (let i = 0; i < length; i++) {
+                const decay = Math.pow(1 - i / length, 2);
+                impulseL[i] = (Math.random() * 2 - 1) * decay;
+                impulseR[i] = (Math.random() * 2 - 1) * decay;
+            }
+
+            effects.reverb.buffer = impulse;
+
+            // ディレイ
+            effects.delay = ctx.createDelay(1.0);
+            effects.delay.delayTime.value = 0.375; // 付点8分音符（BPM120で）
+            effects.delayFeedback = ctx.createGain();
+            effects.delayFeedback.gain.value = 0.4;
+            effects.delayGain = ctx.createGain();
+            effects.delayGain.gain.value = effectParams.delay;
+
+            // ディレイのフィードバックループ
+            effects.delay.connect(effects.delayFeedback);
+            effects.delayFeedback.connect(effects.delay);
+
+            // ディストーション（WaveShaper）
+            effects.distortion = ctx.createWaveShaper();
+            effects.distortionGain = ctx.createGain();
+            effects.distortionGain.gain.value = effectParams.distortion;
+
+            // ディストーションカーブを生成
+            updateDistortionCurve(50);
+
+            // マスターゲイン
+            effects.masterGain = ctx.createGain();
+            effects.masterGain.gain.value = 0.8;
+
+            // エフェクトチェーンを接続
+            // ドライ → マスター
+            effects.dryGain.connect(effects.masterGain);
+
+            // リバーブ → マスター
+            effects.reverb.connect(effects.reverbGain);
+            effects.reverbGain.connect(effects.masterGain);
+
+            // ディレイ → マスター
+            effects.delay.connect(effects.delayGain);
+            effects.delayGain.connect(effects.masterGain);
+
+            // ディストーション → マスター
+            effects.distortion.connect(effects.distortionGain);
+            effects.distortionGain.connect(effects.masterGain);
+
+            // マスター → 出力
+            effects.masterGain.connect(ctx.destination);
+        }
+
+        // ディストーションカーブを更新
+        function updateDistortionCurve(amount) {
+            const samples = 44100;
+            const curve = new Float32Array(samples);
+            const deg = Math.PI / 180;
+
+            for (let i = 0; i < samples; i++) {
+                const x = (i * 2) / samples - 1;
+                curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
+            }
+
+            effects.distortion.curve = curve;
+        }
+
+        // エフェクトチェーンに音源を接続
+        function connectToEffects(source) {
+            // ドライ信号
+            source.connect(effects.dryGain);
+
+            // ウェット信号（エフェクト）
+            source.connect(effects.reverb);
+            source.connect(effects.delay);
+            source.connect(effects.distortion);
         }
 
         // ステップボタンを生成
@@ -367,7 +609,7 @@
             gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
 
             osc.connect(gainNode);
-            gainNode.connect(ctx.destination);
+            connectToEffects(gainNode);
 
             osc.start(time);
             osc.stop(time + 0.5);
@@ -400,7 +642,7 @@
 
             noise.connect(filter);
             filter.connect(gainNode);
-            gainNode.connect(ctx.destination);
+            connectToEffects(gainNode);
 
             noise.start(time);
             noise.stop(time + 0.2);
@@ -433,7 +675,7 @@
 
             noise.connect(filter);
             filter.connect(gainNode);
-            gainNode.connect(ctx.destination);
+            connectToEffects(gainNode);
 
             noise.start(time);
             noise.stop(time + 0.05);
@@ -530,10 +772,45 @@
             }
         }
 
+        // エフェクトコントロール関数
+        function updateReverb() {
+            const value = parseInt(reverbSlider.value) / 100;
+            effectParams.reverb = value;
+            if (effects.reverbGain) {
+                effects.reverbGain.gain.value = value;
+            }
+            reverbValue.textContent = `${reverbSlider.value}%`;
+        }
+
+        function updateDelay() {
+            const value = parseInt(delaySlider.value) / 100;
+            effectParams.delay = value;
+            if (effects.delayGain) {
+                effects.delayGain.gain.value = value;
+            }
+            delayValue.textContent = `${delaySlider.value}%`;
+        }
+
+        function updateDistortion() {
+            const value = parseInt(distortionSlider.value) / 100;
+            effectParams.distortion = value;
+            if (effects.distortionGain) {
+                effects.distortionGain.gain.value = value;
+                // ディストーション量に応じてカーブを更新
+                updateDistortionCurve(value * 100);
+            }
+            distortionValue.textContent = `${distortionSlider.value}%`;
+        }
+
         // イベントリスナー
         playBtn.addEventListener('click', togglePlay);
         bpmInput.addEventListener('change', updateBPM);
         bpmInput.addEventListener('input', updateBPM);
+
+        // エフェクトスライダー
+        reverbSlider.addEventListener('input', updateReverb);
+        delaySlider.addEventListener('input', updateDelay);
+        distortionSlider.addEventListener('input', updateDistortion);
 
         // 初期化
         createSteps();
