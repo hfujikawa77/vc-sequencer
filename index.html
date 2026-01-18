@@ -271,21 +271,21 @@
             border-color: #222;
         }
 
-        /* 押下状態の色（暗いバージョン） */
+        /* 押下状態の色（元の色を残す） */
         .step.active:nth-child(-n+4) {
-            background: linear-gradient(180deg, #330000 0%, #220000 100%);
+            background: linear-gradient(180deg, #aa2222 0%, #881111 100%);
         }
 
         .step.active:nth-child(n+5):nth-child(-n+8) {
-            background: linear-gradient(180deg, #442200 0%, #331100 100%);
+            background: linear-gradient(180deg, #cc5522 0%, #aa3311 100%);
         }
 
         .step.active:nth-child(n+9):nth-child(-n+12) {
-            background: linear-gradient(180deg, #443300 0%, #332200 100%);
+            background: linear-gradient(180deg, #ccaa22 0%, #aa8811 100%);
         }
 
         .step.active:nth-child(n+13) {
-            background: linear-gradient(180deg, #444444 0%, #333333 100%);
+            background: linear-gradient(180deg, #999999 0%, #777777 100%);
         }
 
         .step.current {
@@ -373,29 +373,12 @@
             border-top: 3px solid #ff4444;
         }
 
-        .effect-control.filter {
+        .effect-control.filter-cutoff {
             border-top: 3px solid #8844ff;
-            min-width: 180px;
         }
 
-        .filter-controls {
-            display: flex;
-            gap: 30px;
-            align-items: flex-end;
-        }
-
-        .filter-param {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .filter-param-label {
-            color: #aaa;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
+        .effect-control.filter-resonance {
+            border-top: 3px solid #aa66ff;
         }
 
         .effect-label {
@@ -523,14 +506,6 @@
             .effect-slider {
                 height: 120px;
             }
-
-            .effect-control.filter {
-                min-width: 140px;
-            }
-
-            .filter-controls {
-                gap: 20px;
-            }
         }
     </style>
 </head>
@@ -577,23 +552,18 @@
                         <div class="effect-value" id="distortionValue">0%</div>
                     </div>
                 </div>
-                <div class="effect-control filter">
-                    <label class="effect-label">Filter</label>
-                    <div class="filter-controls">
-                        <div class="filter-param">
-                            <div class="filter-param-label">Cutoff</div>
-                            <div class="fader-container">
-                                <input type="range" class="effect-slider" id="filterCutoffSlider" min="0" max="100" value="100" orient="vertical">
-                                <div class="effect-value" id="filterCutoffValue">20000 Hz</div>
-                            </div>
-                        </div>
-                        <div class="filter-param">
-                            <div class="filter-param-label">Resonance</div>
-                            <div class="fader-container">
-                                <input type="range" class="effect-slider" id="filterResonanceSlider" min="0" max="100" value="0" orient="vertical">
-                                <div class="effect-value" id="filterResonanceValue">1.0</div>
-                            </div>
-                        </div>
+                <div class="effect-control filter-cutoff">
+                    <label class="effect-label">Cutoff</label>
+                    <div class="fader-container">
+                        <input type="range" class="effect-slider" id="filterCutoffSlider" min="0" max="100" value="100" orient="vertical">
+                        <div class="effect-value" id="filterCutoffValue">20000 Hz</div>
+                    </div>
+                </div>
+                <div class="effect-control filter-resonance">
+                    <label class="effect-label">Resonance</label>
+                    <div class="fader-container">
+                        <input type="range" class="effect-slider" id="filterResonanceSlider" min="0" max="100" value="0" orient="vertical">
+                        <div class="effect-value" id="filterResonanceValue">1.0</div>
                     </div>
                 </div>
             </div>
