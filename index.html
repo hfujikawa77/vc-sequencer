@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: 'Arial', monospace;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,34 +22,61 @@
         }
 
         .sequencer {
-            background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
-            border-radius: 20px;
-            padding: 40px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 15px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 30px;
             box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            max-width: 1200px;
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                inset 0 2px 4px rgba(0, 0, 0, 0.5);
+            max-width: 1400px;
             width: 100%;
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            text-align: right;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #ff3d00;
+            font-size: 28px;
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .title-section {
+            text-align: right;
         }
 
         .title {
-            color: #ff6b35;
-            font-size: 32px;
+            color: #ff3d00;
+            font-size: 36px;
             font-weight: bold;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
-            margin-bottom: 10px;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        .model {
+            color: #ff3d00;
+            font-size: 48px;
+            font-weight: bold;
+            letter-spacing: 8px;
+            margin-bottom: 5px;
+            font-family: 'Arial Black', sans-serif;
         }
 
         .subtitle {
-            color: #888;
-            font-size: 14px;
-            letter-spacing: 2px;
+            color: #666;
+            font-size: 13px;
+            letter-spacing: 3px;
+            font-style: italic;
         }
 
         .controls {
@@ -62,67 +89,77 @@
         }
 
         .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 15px 40px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.5),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         .btn-play {
-            background: linear-gradient(145deg, #ff6b35, #f7931e);
-            color: white;
+            background: linear-gradient(180deg, #ffdd44 0%, #ddaa00 100%);
+            color: #000;
         }
 
         .btn-play:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(255, 107, 53, 0.4);
+            box-shadow:
+                0 6px 12px rgba(0, 0, 0, 0.6),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
         }
 
         .btn-play:active {
-            transform: translateY(0);
+            transform: translateY(2px);
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .btn-play.playing {
-            background: linear-gradient(145deg, #666, #555);
+            background: linear-gradient(180deg, #44ff44 0%, #00aa00 100%);
         }
 
         .bpm-control {
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px 20px;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px 24px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .bpm-label {
-            color: #ff6b35;
+            color: #ffaa00;
             font-weight: bold;
-            font-size: 14px;
-            letter-spacing: 1px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .bpm-input {
             width: 80px;
-            padding: 8px;
-            background: #1a1a1a;
-            border: 2px solid #ff6b35;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 16px;
+            padding: 10px;
+            background: #000;
+            border: 2px solid #ffaa00;
+            border-radius: 3px;
+            color: #ff3d00;
+            font-size: 18px;
             font-weight: bold;
             text-align: center;
+            font-family: 'Courier New', monospace;
         }
 
         .bpm-input:focus {
             outline: none;
-            box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+            box-shadow: 0 0 8px rgba(255, 170, 0, 0.5);
         }
 
         .tracks {
@@ -134,31 +171,36 @@
         .track {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .track.kick {
-            border-left-color: #ff6b35;
+            background: rgba(50, 50, 50, 0.4);
         }
 
         .track.snare {
-            border-left-color: #f7931e;
+            background: rgba(50, 50, 50, 0.4);
         }
 
         .track.hihat {
-            border-left-color: #ffd700;
+            background: rgba(50, 50, 50, 0.4);
         }
 
         .track-name {
-            min-width: 100px;
-            color: #fff;
+            min-width: 120px;
+            color: #ffaa00;
             font-weight: bold;
-            font-size: 16px;
-            letter-spacing: 1px;
+            font-size: 14px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 170, 0, 0.3);
         }
 
         .steps {
@@ -168,38 +210,52 @@
         }
 
         .step {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            width: 60px;
+            height: 80px;
+            border-radius: 4px;
+            border: 2px solid #000;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.1s;
             position: relative;
             box-shadow:
-                0 2px 4px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                0 4px 8px rgba(0, 0, 0, 0.5),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        }
+
+        /* ステップの色分け（TR-808風） */
+        .step:nth-child(-n+4) {
+            background: linear-gradient(180deg, #ff4444 0%, #cc0000 100%);
+        }
+
+        .step:nth-child(n+5):nth-child(-n+8) {
+            background: linear-gradient(180deg, #ff8844 0%, #dd5500 100%);
+        }
+
+        .step:nth-child(n+9):nth-child(-n+12) {
+            background: linear-gradient(180deg, #ffdd44 0%, #ddaa00 100%);
+        }
+
+        .step:nth-child(n+13) {
+            background: linear-gradient(180deg, #e8e8e8 0%, #cccccc 100%);
         }
 
         .step:hover {
-            transform: scale(1.05);
-            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow:
+                0 6px 12px rgba(0, 0, 0, 0.6),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
         }
 
         .step.active {
-            background: linear-gradient(145deg, #ff6b35, #f7931e);
-            border-color: #ff6b35;
             box-shadow:
-                0 0 15px rgba(255, 107, 53, 0.6),
-                0 4px 8px rgba(0, 0, 0, 0.4);
+                0 2px 4px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.4);
+            transform: translateY(2px);
         }
 
         .step.current {
-            border-color: #00ff88;
-            border-width: 4px;
-            box-shadow:
-                0 0 20px rgba(0, 255, 136, 0.8),
-                0 4px 8px rgba(0, 0, 0, 0.4);
+            outline: 3px solid #00ff00;
+            outline-offset: 2px;
         }
 
         .step.active.current {
@@ -208,19 +264,19 @@
 
         @keyframes pulse {
             0% {
-                transform: scale(1);
+                transform: translateY(2px);
             }
             50% {
-                transform: scale(1.2);
+                transform: translateY(0);
             }
             100% {
-                transform: scale(1);
+                transform: translateY(2px);
             }
         }
 
         /* 4ステップごとの視覚的区切り */
         .step:nth-child(4n+1) {
-            margin-left: 4px;
+            margin-left: 8px;
         }
 
         .step:nth-child(1) {
@@ -229,17 +285,17 @@
 
         .effects-panel {
             margin-top: 30px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
             padding: 20px;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 107, 53, 0.3);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 170, 0, 0.2);
         }
 
         .effects-title {
-            color: #ff6b35;
-            font-size: 18px;
+            color: #ffaa00;
+            font-size: 14px;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 20px;
             text-align: center;
@@ -252,26 +308,27 @@
         }
 
         .effect-control {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
             padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid;
+            border-radius: 4px;
+            border-left: 2px solid;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .effect-control.reverb {
-            border-left-color: #4ecdc4;
+            border-left: 2px solid #00aaaa;
         }
 
         .effect-control.delay {
-            border-left-color: #95e1d3;
+            border-left: 2px solid #00ff88;
         }
 
         .effect-control.distortion {
-            border-left-color: #ff6b6b;
+            border-left: 2px solid #ff4444;
         }
 
         .effect-control.filter {
-            border-left-color: #a29bfe;
+            border-left: 2px solid #8844ff;
         }
 
         .filter-controls {
@@ -294,10 +351,10 @@
         }
 
         .effect-label {
-            color: #fff;
-            font-size: 14px;
+            color: #ffaa00;
+            font-size: 12px;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 10px;
             display: block;
@@ -305,56 +362,71 @@
 
         .effect-slider {
             width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            background: #000;
             outline: none;
             -webkit-appearance: none;
             margin-bottom: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .effect-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #ff6b35;
+            width: 24px;
+            height: 24px;
+            border-radius: 3px;
+            background: linear-gradient(145deg, #666, #444);
             cursor: pointer;
-            box-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            border: 1px solid #888;
         }
 
         .effect-slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #ff6b35;
+            width: 24px;
+            height: 24px;
+            border-radius: 3px;
+            background: linear-gradient(145deg, #666, #444);
             cursor: pointer;
-            border: none;
-            box-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+            border: 1px solid #888;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .effect-value {
-            color: #999;
-            font-size: 12px;
+            color: #ff3d00;
+            font-size: 11px;
             text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
         }
 
         .footer {
             margin-top: 30px;
             text-align: center;
-            color: #666;
-            font-size: 12px;
+            color: #555;
+            font-size: 10px;
+            letter-spacing: 1px;
+            padding: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @media (max-width: 768px) {
             .sequencer {
-                padding: 20px;
+                padding: 15px;
+            }
+
+            .model {
+                font-size: 32px;
+            }
+
+            .title {
+                font-size: 24px;
             }
 
             .step {
-                width: 40px;
-                height: 40px;
+                width: 45px;
+                height: 60px;
             }
 
             .steps {
@@ -362,8 +434,9 @@
             }
 
             .track-name {
-                min-width: 60px;
-                font-size: 12px;
+                min-width: 70px;
+                font-size: 11px;
+                padding: 6px 10px;
             }
 
             .effects-controls {
@@ -375,8 +448,12 @@
 <body>
     <div class="sequencer">
         <div class="header">
-            <div class="title">TR-808</div>
-            <div class="subtitle">STEP SEQUENCER</div>
+            <div class="logo">Roland</div>
+            <div class="title-section">
+                <div class="title">Rhythm Composer</div>
+                <div class="model">TR-808</div>
+                <div class="subtitle">Computer Controlled</div>
+            </div>
         </div>
 
         <div class="controls">
