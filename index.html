@@ -95,37 +95,43 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.1s;
+            transition: all 0.12s ease-out;
             box-shadow:
-                0 4px 8px rgba(0, 0, 0, 0.5),
-                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+                0 6px 12px rgba(0, 0, 0, 0.6),
+                0 3px 6px rgba(0, 0, 0, 0.4),
+                inset 0 2px 6px rgba(255, 255, 255, 0.3);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .btn-play {
-            background: linear-gradient(180deg, #ffdd44 0%, #ddaa00 100%);
+            background: linear-gradient(180deg, #ffee77 0%, #ffdd44 50%, #ddaa00 100%);
             color: #000;
         }
 
         .btn-play:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow:
-                0 8px 16px rgba(0, 0, 0, 0.7),
-                inset 0 2px 4px rgba(255, 255, 255, 0.4);
-            filter: brightness(1.1);
+                0 10px 20px rgba(0, 0, 0, 0.7),
+                0 5px 10px rgba(0, 0, 0, 0.5),
+                inset 0 2px 8px rgba(255, 255, 255, 0.4);
+            filter: brightness(1.15);
         }
 
         .btn-play:active {
-            transform: translateY(4px);
+            transform: translateY(6px);
             box-shadow:
-                0 1px 2px rgba(0, 0, 0, 0.8),
-                inset 0 4px 12px rgba(0, 0, 0, 0.4);
-            filter: brightness(0.9);
+                0 0 2px rgba(0, 0, 0, 0.8),
+                inset 0 6px 16px rgba(0, 0, 0, 0.4);
+            filter: brightness(0.85);
         }
 
         .btn-play.playing {
-            background: linear-gradient(180deg, #44ff44 0%, #00aa00 100%);
+            background: linear-gradient(180deg, #66ff66 0%, #44ff44 50%, #00aa00 100%);
+            box-shadow:
+                0 0 20px rgba(0, 255, 0, 0.5),
+                0 6px 12px rgba(0, 0, 0, 0.6),
+                inset 0 2px 6px rgba(255, 255, 255, 0.3);
         }
 
         .bpm-control {
@@ -217,45 +223,69 @@
             border-radius: 4px;
             border: 2px solid #000;
             cursor: pointer;
-            transition: all 0.1s;
+            transition: all 0.12s ease-out;
             position: relative;
+            /* 未押下状態: 浮いている */
             box-shadow:
-                0 4px 8px rgba(0, 0, 0, 0.5),
-                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+                0 6px 12px rgba(0, 0, 0, 0.6),
+                0 3px 6px rgba(0, 0, 0, 0.4),
+                inset 0 2px 6px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* ステップの色分け（TR-808風） */
+        /* ステップの色分け（TR-808風） - 未押下状態は明るい */
         .step:nth-child(-n+4) {
-            background: linear-gradient(180deg, #ff4444 0%, #cc0000 100%);
+            background: linear-gradient(180deg, #ff6666 0%, #ff3333 50%, #cc0000 100%);
         }
 
         .step:nth-child(n+5):nth-child(-n+8) {
-            background: linear-gradient(180deg, #ff8844 0%, #dd5500 100%);
+            background: linear-gradient(180deg, #ffaa66 0%, #ff8844 50%, #dd5500 100%);
         }
 
         .step:nth-child(n+9):nth-child(-n+12) {
-            background: linear-gradient(180deg, #ffdd44 0%, #ddaa00 100%);
+            background: linear-gradient(180deg, #ffee77 0%, #ffdd44 50%, #ddaa00 100%);
         }
 
         .step:nth-child(n+13) {
-            background: linear-gradient(180deg, #e8e8e8 0%, #cccccc 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #e8e8e8 50%, #cccccc 100%);
         }
 
         .step:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow:
-                0 8px 16px rgba(0, 0, 0, 0.7),
-                inset 0 2px 4px rgba(255, 255, 255, 0.4);
-            filter: brightness(1.1);
+                0 10px 20px rgba(0, 0, 0, 0.7),
+                0 5px 10px rgba(0, 0, 0, 0.5),
+                inset 0 2px 8px rgba(255, 255, 255, 0.4);
+            filter: brightness(1.15);
         }
 
+        /* 押下状態: 大きく沈んで暗い */
         .step.active {
+            transform: translateY(6px);
+            /* 深く沈んだ影 */
             box-shadow:
-                0 1px 2px rgba(0, 0, 0, 0.8),
-                inset 0 4px 12px rgba(0, 0, 0, 0.6);
-            transform: translateY(4px);
-            filter: brightness(0.8);
-            border-color: #333;
+                0 0 2px rgba(0, 0, 0, 0.8),
+                inset 0 6px 16px rgba(0, 0, 0, 0.8),
+                inset 0 2px 4px rgba(0, 0, 0, 0.6);
+            filter: brightness(0.5);
+            border-color: #222;
+        }
+
+        /* 押下状態の色（暗いバージョン） */
+        .step.active:nth-child(-n+4) {
+            background: linear-gradient(180deg, #330000 0%, #220000 100%);
+        }
+
+        .step.active:nth-child(n+5):nth-child(-n+8) {
+            background: linear-gradient(180deg, #442200 0%, #331100 100%);
+        }
+
+        .step.active:nth-child(n+9):nth-child(-n+12) {
+            background: linear-gradient(180deg, #443300 0%, #332200 100%);
+        }
+
+        .step.active:nth-child(n+13) {
+            background: linear-gradient(180deg, #444444 0%, #333333 100%);
         }
 
         .step.current {
@@ -269,14 +299,19 @@
 
         @keyframes pulse {
             0% {
-                transform: translateY(4px) scale(1);
+                transform: translateY(6px) scale(1);
+                filter: brightness(0.5);
             }
             50% {
-                transform: translateY(0) scale(1.05);
-                filter: brightness(1.2);
+                transform: translateY(3px) scale(1.05);
+                filter: brightness(0.9);
+                box-shadow:
+                    0 2px 8px rgba(0, 255, 0, 0.4),
+                    inset 0 4px 12px rgba(0, 0, 0, 0.7);
             }
             100% {
-                transform: translateY(4px) scale(1);
+                transform: translateY(6px) scale(1);
+                filter: brightness(0.5);
             }
         }
 
