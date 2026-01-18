@@ -343,103 +343,139 @@
         }
 
         .effects-controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
         }
 
         .effect-control {
             background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
+            padding: 20px 15px;
             border-radius: 4px;
-            border-left: 2px solid;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
         }
 
         .effect-control.reverb {
-            border-left: 2px solid #00aaaa;
+            border-top: 3px solid #00aaaa;
         }
 
         .effect-control.delay {
-            border-left: 2px solid #00ff88;
+            border-top: 3px solid #00ff88;
         }
 
         .effect-control.distortion {
-            border-left: 2px solid #ff4444;
+            border-top: 3px solid #ff4444;
         }
 
         .effect-control.filter {
-            border-left: 2px solid #8844ff;
+            border-top: 3px solid #8844ff;
+            min-width: 180px;
         }
 
         .filter-controls {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            gap: 30px;
+            align-items: flex-end;
         }
 
         .filter-param {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            align-items: center;
         }
 
         .filter-param-label {
             color: #aaa;
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-bottom: 10px;
         }
 
         .effect-label {
             color: #ffaa00;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: block;
+            text-align: center;
         }
 
+        /* 縦フェーダーのコンテナ */
+        .fader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 縦フェーダー */
         .effect-slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: #000;
+            -webkit-appearance: slider-vertical;
+            appearance: slider-vertical;
+            width: 8px;
+            height: 150px;
+            background: linear-gradient(180deg, #000 0%, #1a1a1a 100%);
             outline: none;
-            -webkit-appearance: none;
-            margin-bottom: 5px;
+            border-radius: 4px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            writing-mode: bt-lr;
         }
 
         .effect-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 3px;
-            background: linear-gradient(145deg, #666, #444);
+            width: 30px;
+            height: 20px;
+            border-radius: 2px;
+            background: linear-gradient(145deg, #888, #555);
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            border: 1px solid #888;
+            box-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.6),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            border: 1px solid #999;
         }
 
         .effect-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 3px;
-            background: linear-gradient(145deg, #666, #444);
+            width: 30px;
+            height: 20px;
+            border-radius: 2px;
+            background: linear-gradient(145deg, #888, #555);
             cursor: pointer;
-            border: 1px solid #888;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            border: 1px solid #999;
+            box-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.6),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .effect-slider::-webkit-slider-runnable-track {
+            background: transparent;
+        }
+
+        .effect-slider::-moz-range-track {
+            background: transparent;
         }
 
         .effect-value {
             color: #ff3d00;
-            font-size: 11px;
-            text-align: right;
+            font-size: 12px;
+            text-align: center;
             font-family: 'Courier New', monospace;
             font-weight: bold;
+            min-width: 60px;
+            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+            border: 1px solid rgba(255, 61, 0, 0.3);
         }
 
         .footer {
@@ -481,7 +517,19 @@
             }
 
             .effects-controls {
-                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .effect-slider {
+                height: 120px;
+            }
+
+            .effect-control.filter {
+                min-width: 140px;
+            }
+
+            .filter-controls {
+                gap: 20px;
             }
         }
     </style>
@@ -510,31 +558,41 @@
             <div class="effects-controls">
                 <div class="effect-control reverb">
                     <label class="effect-label">Reverb</label>
-                    <input type="range" class="effect-slider" id="reverbSlider" min="0" max="100" value="30">
-                    <div class="effect-value" id="reverbValue">30%</div>
+                    <div class="fader-container">
+                        <input type="range" class="effect-slider" id="reverbSlider" min="0" max="100" value="30" orient="vertical">
+                        <div class="effect-value" id="reverbValue">30%</div>
+                    </div>
                 </div>
                 <div class="effect-control delay">
                     <label class="effect-label">Delay</label>
-                    <input type="range" class="effect-slider" id="delaySlider" min="0" max="100" value="0">
-                    <div class="effect-value" id="delayValue">0%</div>
+                    <div class="fader-container">
+                        <input type="range" class="effect-slider" id="delaySlider" min="0" max="100" value="0" orient="vertical">
+                        <div class="effect-value" id="delayValue">0%</div>
+                    </div>
                 </div>
                 <div class="effect-control distortion">
                     <label class="effect-label">Distortion</label>
-                    <input type="range" class="effect-slider" id="distortionSlider" min="0" max="100" value="0">
-                    <div class="effect-value" id="distortionValue">0%</div>
+                    <div class="fader-container">
+                        <input type="range" class="effect-slider" id="distortionSlider" min="0" max="100" value="0" orient="vertical">
+                        <div class="effect-value" id="distortionValue">0%</div>
+                    </div>
                 </div>
                 <div class="effect-control filter">
                     <label class="effect-label">Filter</label>
                     <div class="filter-controls">
                         <div class="filter-param">
                             <div class="filter-param-label">Cutoff</div>
-                            <input type="range" class="effect-slider" id="filterCutoffSlider" min="0" max="100" value="100">
-                            <div class="effect-value" id="filterCutoffValue">20000 Hz</div>
+                            <div class="fader-container">
+                                <input type="range" class="effect-slider" id="filterCutoffSlider" min="0" max="100" value="100" orient="vertical">
+                                <div class="effect-value" id="filterCutoffValue">20000 Hz</div>
+                            </div>
                         </div>
                         <div class="filter-param">
                             <div class="filter-param-label">Resonance</div>
-                            <input type="range" class="effect-slider" id="filterResonanceSlider" min="0" max="100" value="0">
-                            <div class="effect-value" id="filterResonanceValue">1.0</div>
+                            <div class="fader-container">
+                                <input type="range" class="effect-slider" id="filterResonanceSlider" min="0" max="100" value="0" orient="vertical">
+                                <div class="effect-value" id="filterResonanceValue">1.0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
